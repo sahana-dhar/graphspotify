@@ -47,13 +47,11 @@ MATCH (n:Song) RETURN count(n) AS total_nodes;
 MATCH ()-[r:SIMILAR_TO]->() RETURN count(r) AS total_edges;
 
 
-// part 3: Recommendation Query
+// part 3: Recommendation Query # 1
 // similar songs to strokes/regina but not by them, top 5, show score
 MATCH (seed:Song)-[r:SIMILAR_TO]-(rec:Song)
 WHERE seed.artist CONTAINS "The Strokes" // REPLACE W DESIRED ARTIST HERE !
   AND NOT rec.artist CONTAINS "The Strokes"
-RETURN rec.title AS title, rec.artist AS artist, rec.album AS album,
-    MAX(r.similarity) AS score
+RETURN seed.title AS seed_title, rec.title  AS rec_title, rec.artist AS rec_artist, r.similarity AS score
 ORDER BY score DESC
 LIMIT 5;
-
