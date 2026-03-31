@@ -1,3 +1,10 @@
+'''
+sample_and_filter: samples randomly from the full spotify dataset, ensuring
+    all songs by the two identified artists are kept
+
+Contributors: Sahana Dhar (all)
+'''
+
 import pandas as pd      
 SAMPLE_SIZE = 1500 # total songs to keep 
 AUDIO_FEATURES = ["danceability", "energy", "loudness", "speechiness",

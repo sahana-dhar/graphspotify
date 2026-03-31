@@ -1,7 +1,7 @@
 '''
-compute_similarity: computes euclidean distance similarity scores of
-    the sampled songs to a specific artist, including feature weighting
-    based on expert opinions on music perception:
+compute_similarity: computes euclidean distance similarity scores among
+    the sampled songs, including feature weighting based on 
+    expert opinions on music perception:
     (https://pmc.ncbi.nlm.nih.gov/articles/PMC5405345/#:~:text=Overall%2C%20the%20results%20of%20this,perception%20of%20short%20music%20clips.)
 
 Contributors: Sahana Dhar (euclidean distance set-up) 
@@ -16,7 +16,6 @@ from sklearn.preprocessing import MinMaxScaler
 THRESHOLD  = 0.25
 AUDIO_FEATURES = ["danceability", "energy", "loudness", "speechiness",
     "acousticness", "instrumentalness", "liveness", "valence", "tempo"]
-ARTIST = "The Strokes" ### replace for diff artists!
 
 def main():
     df = pd.read_csv("data/sampled_songs.csv")
@@ -68,10 +67,11 @@ def main():
     # save edge file
     pairs_df.to_csv("data/song_pairs.csv", index=False)
 
-    # make sure ARTIST songs have edges, shd remove later
-    artist_ids   = df[df["track_artist"].str.contains(ARTIST, case=False, na=False)]["song_id"]
+    # make sure a specific artist's songs have edges (just for testing)
+    artist = "Regina Spektor"
+    artist_ids   = df[df["track_artist"].str.contains(artist, case=False, na=False)]["song_id"]
     artist_edges = pairs_df[pairs_df["song_id_a"].isin(artist_ids) | pairs_df["song_id_b"].isin(artist_ids)]
-    print(f"{ARTIST} songs have {len(artist_edges)} edges")
+    print(f"{artist} songs have {len(artist_edges)} edges")
 
 if __name__ == "__main__":
     main()
