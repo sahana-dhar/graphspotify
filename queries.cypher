@@ -1,5 +1,11 @@
-// hw5
+// queries.cypher: loads the relevant features in neo4j to create graph, 
+//      extracts top 5 recommendations based on similarity scores
+// Contributors: Sahana Dhar (graph setup) and Anya Wild (recommendations)
+
+
 // put songs_nodes.csv + song_pairs.csv in neo4j import folder first
+// run in terminal to reset: cypher-shell -u < > -p < > "MATCH (n) DETACH DELETE n"
+
 
 // constraints + index 
 // 1 
@@ -40,7 +46,14 @@ MATCH (n:Song) RETURN count(n) AS total_nodes;
 // 6
 MATCH ()-[r:SIMILAR_TO]->() RETURN count(r) AS total_edges;
 
-// part 3: recommendation query
+
+// part 3: Recommendation Query
 // similar songs to strokes/regina but not by them, top 5, show score
-// TODO: add query below
+MATCH (seed:Song)-[r:SIMILAR_TO]-(rec:Song)
+WHERE seed.artist CONTAINS "The Strokes" // REPLACE W DESIRED ARTIST HERE !
+  AND NOT rec.artist CONTAINS "The Strokes"
+RETURN rec.title AS title, rec.artist AS artist, rec.album AS album,
+    MAX(r.similarity) AS score
+ORDER BY score DESC
+LIMIT 5;
 
